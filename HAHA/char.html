@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Masakit?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="heart-container" id="hearts"></div>
+  <div class="container">
+    <div class="box">
+      <h1>Mahal mo parin siya?</h1>
+      <p class="hugot">“Kung mahal mo, bakit mo iniwan?” 🥀</p>
+      <div class="choice">
+        <label><input type="radio" name="choose" value="Oo" /> Oo</label>
+        <label><input type="radio" name="choose" value="Hindi" /> Hindi</label>
+      </div>
+
+      <div class="whatif">
+        <video id="myVideo" src="hey.mp4" muted playsinline></video>
+        <audio id="whatifAudio" src="what if.mp3"></audio>
+      </div>
+
+      <div class="videos" id="videos">
+        <div class="for-image" id="no"></div>
+        <div class="background-music" id="music">
+          <audio id="bgMusic" controls autoplay loop>
+            <source src="kung tayo talaga.mp3" type="audio/mpeg" />
+          </audio>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    body {
+      background: linear-gradient(120deg, #ffdde1, #f07888);
+      font-family: 'Raleway', sans-serif;
+      overflow: hidden;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    .container {
+      height: 100vh;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+    .box {
+      width: 500px;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+    }
+    h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+      line-height: 1.6;
+      letter-spacing: 1px;
+      font-style: italic;
+      min-height: 40px;
+      white-space: pre-wrap;
+      color: #fff;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    }
+    .hugot {
+      font-size: 18px;
+      font-style: italic;
+      color: #fdfdfd;
+      margin-bottom: 30px;
+      animation: fadeIn 1.5s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .choice {
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    label {
+      font-size: 20px;
+      color: #fff;
+    }
+    input[type="radio"] {
+      transform: scale(1.2);
+      margin-right: 5px;
+    }
+    .videos {
+      height: 500px;
+      display: none;
+      grid-template-columns: 1fr;
+      grid-template-rows: auto 100px;
+    }
+    .for-image {
+      display: none;
+      width: 100%;
+      margin: auto;
+      height: 100%;
+      background-image: url(alden-richards-lang-sakalam-v0-qzc6d045qd2f1.webp);
+      background-position: center;
+      background-size: cover;
+    }
+    .background-music {
+      grid-column: 1 / span 3;
+      display: none;
+    }
+    .whatif {
+      height: auto;
+      width: 100%;
+      margin: auto;
+    }
+    video {
+      width: 100%;
+      height: 500px;
+      display: none;
+    }
+    audio#whatifAudio {
+      display: none;
+    }
+    @media screen and (max-width: 1024px) {
+      .box {
+        width: 90%;
+      }
+    }
+    @media screen and (max-width: 500px) {
+      .choice {
+        flex-direction: column;
+        height: auto;
+        gap: 5px;
+      }
+      .box {
+        padding: 15px;
+      }
+      .for-image {
+        height: 250px;
+      }
+    }
+
+    /* Floating hearts */
+    .heart-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: url('https://emojiapi.dev/api/v1/2764.png') no-repeat center;
+      background-size: contain;
+      animation: float 6s linear infinite;
+    }
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) scale(0.5);
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-10vh) scale(1);
+        opacity: 0;
+      }
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+    const question = document.querySelector("h1");
+    const originalText = "Mahal mo parin siya?";
+    question.innerText = "";
+    let i = 0;
+    function typeWriter() {
+      if (i < originalText.length) {
+        question.innerText += originalText.charAt(i);
+        i++;
+        setTimeout(typeWriter, 80);
+      }
+    }
+    typeWriter();
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const ooInput = document.querySelector('input[value="Oo"]');
+      const hindiInput = document.querySelector('input[value="Hindi"]');
+      const videosContainer = document.querySelector(".videos");
+      const forImage = document.querySelector(".for-image");
+      const music = document.querySelector(".background-music");
+      const video = document.getElementById("myVideo");
+      const audio = document.getElementById("bgMusic");
+      const whatifAudio = document.getElementById("whatifAudio");
+      const videos = document.getElementById('videos');
+
+      const box = document.querySelector(".box");
+      const reaction = document.createElement("div");
+      reaction.style.marginTop = "20px";
+      reaction.style.fontSize = "20px";
+      reaction.style.display = "none";
+      reaction.style.color = "#fff";
+      box.appendChild(reaction);
+
+      const resetBtn = document.createElement("button");
+      resetBtn.innerText = "Ulitin natin 🔁";
+      resetBtn.style.marginTop = "20px";
+      resetBtn.style.padding = "10px 15px";
+      resetBtn.style.border = "none";
+      resetBtn.style.backgroundColor = "#fff";
+      resetBtn.style.color = "#333";
+      resetBtn.style.borderRadius = "8px";
+      resetBtn.style.display = "none";
+      resetBtn.style.cursor = "pointer";
+      resetBtn.style.fontWeight = "bold";
+      box.appendChild(resetBtn);
+
+      ooInput.addEventListener("change", function () {
+        if (this.checked) {
+          question.style.display = "none";
+          document.querySelector(".hugot").style.display = "none";
+
+          videosContainer.style.display = "grid";
+          forImage.style.display = "block";
+          music.style.display = "block";
+          video.style.display = "none";
+          video.pause();
+          whatifAudio.pause();
+          audio.play();
+
+          reaction.innerText = "🥹 Sana kayo parin...";
+          reaction.style.display = "block";
+          resetBtn.style.display = "inline-block";
+
+          confetti({
+            particleCount: 150,
+            spread: 100,
+            origin: { y: 0.6 }
+          });
+        }
+      });
+
+      hindiInput.addEventListener("change", function () {
+        if (this.checked) {
+          question.style.display = "none";
+          document.querySelector(".hugot").style.display = "none";
+
+          videosContainer.style.display = "none";
+          forImage.style.display = "none";
+          music.style.display = "none";
+          videos.style.display = "none";
+          audio.pause();
+
+          video.style.display = "block";
+          video.muted = true;
+          video.play();
+          whatifAudio.play();
+
+          reaction.innerText = "💔 Ouch... Baka may iba na siya? Kawawa ka naman. 😔";
+          reaction.style.display = "block";
+          resetBtn.style.display = "inline-block";
+        }
+      });
+
+      resetBtn.addEventListener("click", function () {
+        document.querySelectorAll('input[name="choose"]').forEach(i => i.checked = false);
+        document.getElementById("no").style.display = "none";
+        document.getElementById("music").style.display = "none";
+        videos.style.display = "none";
+
+        video.pause();
+        video.style.display = "none";
+        audio.pause();
+        whatifAudio.pause();
+
+        reaction.style.display = "none";
+        resetBtn.style.display = "none";
+
+        question.style.display = "block";
+        document.querySelector(".hugot").style.display = "block";
+        question.innerText = "";
+        i = 0;
+        typeWriter();
+      });
+
+      // Floating hearts
+      function createHeart() {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
+        document.getElementById("hearts").appendChild(heart);
+        setTimeout(() => heart.remove(), 7000);
+      }
+      setInterval(createHeart, 600);
+    });
+  </script>
+</body>
+</html>
